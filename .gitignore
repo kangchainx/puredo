@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Xcode user-specific files
+*.xcuserstate
+Puredo.xcodeproj/xcuserdata/
+Puredo.xcodeproj/project.xcworkspace/xcuserdata/
+
+# Local tool metadata
+.claude/
