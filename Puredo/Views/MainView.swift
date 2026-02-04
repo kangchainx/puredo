@@ -99,25 +99,22 @@ struct MainView: View {
     
     private func updateWindowConstraintsForMode() {
         if let window = activeWindow() {
-            if themeManager.isMinimalMode {
-                window.minSize = minimalModeMinimumSize
-            } else {
-                window.minSize = minimumWindowSize
-            }
+            window.minSize = currentMinimumWindowSize()
         }
     }
     
     private func setWindowConstraints() {
         if let window = activeWindow() {
             window.tabbingMode = .disallowed
-            window.minSize = minimumWindowSize
+            window.minSize = currentMinimumWindowSize()
         }
     }
     
     private func configureWindow() {
         if let window = activeWindow() {
             window.tabbingMode = .disallowed
-            window.minSize = minimumWindowSize
+            let minimumSize = currentMinimumWindowSize()
+            window.minSize = minimumSize
             
             // Only set size if window hasn't been resized by user
             let currentSize = window.frame.size
@@ -125,27 +122,40 @@ struct MainView: View {
             
             if isDefaultSize {
                 let visibleFrame = window.screen?.visibleFrame ?? NSScreen.main?.visibleFrame ?? .zero
-                let maxWidth = max(minimumWindowSize.width, visibleFrame.width - 80)
-                let maxHeight = max(minimumWindowSize.height, visibleFrame.height - 80)
-                
-                var targetWidth = min(defaultWindowSize.width, maxWidth)
-                var targetHeight = targetWidth * 2
-                
-                if targetHeight > maxHeight {
-                    targetHeight = maxHeight
-                    targetWidth = targetHeight / 2
+                let maxWidth = max(minimumSize.width, visibleFrame.width - 80)
+                let maxHeight = max(minimumSize.height, visibleFrame.height - 80)
+
+                let targetSize: NSSize
+                if themeManager.isMinimalMode {
+                    targetSize = NSSize(
+                        width: min(minimalModeMinimumSize.width, maxWidth),
+                        height: min(minimalModeMinimumSize.height, maxHeight)
+                    )
+                } else {
+                    var targetWidth = min(defaultWindowSize.width, maxWidth)
+                    var targetHeight = targetWidth * 2
+                    
+                    if targetHeight > maxHeight {
+                        targetHeight = maxHeight
+                        targetWidth = targetHeight / 2
+                    }
+                    targetSize = NSSize(width: targetWidth, height: targetHeight)
                 }
 
                 let targetFrame = NSRect(
                     x: window.frame.origin.x,
-                    y: window.frame.origin.y + window.frame.height - targetHeight,
-                    width: targetWidth,
-                    height: targetHeight
+                    y: window.frame.origin.y + window.frame.height - targetSize.height,
+                    width: targetSize.width,
+                    height: targetSize.height
                 )
                 
                 window.setFrame(targetFrame, display: true, animate: false)
             }
         }
+    }
+
+    private func currentMinimumWindowSize() -> NSSize {
+        themeManager.isMinimalMode ? minimalModeMinimumSize : minimumWindowSize
     }
     
     private func activeWindow() -> NSWindow? {
