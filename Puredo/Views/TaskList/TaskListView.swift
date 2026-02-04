@@ -18,11 +18,19 @@ struct TaskListView: View {
             } else {
                 LazyVStack(spacing: DesignSystem.spacingM) {
                     ForEach(viewModel.filteredTasks) { task in
-                        TaskRowView(task: task) {
-                            withAnimation(DesignSystem.springAnimation) {
-                                viewModel.toggleComplete(task)
+                        TaskRowView(
+                            task: task,
+                            onToggle: {
+                                withAnimation(DesignSystem.springAnimation) {
+                                    viewModel.toggleComplete(task)
+                                }
+                            },
+                            onDelete: {
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    viewModel.deleteTask(task)
+                                }
                             }
-                        }
+                        )
                     }
                 }
                 .padding(DesignSystem.spacingL)

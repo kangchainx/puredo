@@ -56,9 +56,9 @@ struct AddTaskPopoverView: View {
             }
 
             HStack(spacing: DesignSystem.spacingM) {
-                // Three color icons without individual shortcuts
+                // Three color icons with keyboard shortcuts
                 HStack(spacing: DesignSystem.spacingM) {
-                    ForEach(TaskPriority.allCases, id: \.self) { priority in
+                    ForEach(Array(TaskPriority.allCases.enumerated()), id: \.element) { index, priority in
                         Button(action: {
                             withAnimation(DesignSystem.springAnimation) {
                                 taskPriority = priority
@@ -74,27 +74,20 @@ struct AddTaskPopoverView: View {
                                 .scaleEffect(taskPriority == priority ? 1.15 : 1.0)
                         }
                         .buttonStyle(.plain)
+                        .keyboardShortcut(KeyEquivalent(Character(String(index + 1))), modifiers: .command)
                     }
                 }
 
                 // Task name input
-                ZStack(alignment: .leading) {
-                    if taskName.isEmpty {
-                        Text("输入任务名称")
-                            .foregroundColor(themeManager.textSecondary)
-                            .allowsHitTesting(false)
-                    }
-                    
-                    TextField("", text: $taskName)
-                        .textFieldStyle(.plain)
-                        .foregroundColor(themeManager.textPrimary)
-                        .focused($isInputFocused)
-                        .onSubmit {
-                            if !taskName.isEmpty {
-                                addTask()
-                            }
+                TextField("输入任务名称", text: $taskName)
+                    .textFieldStyle(.plain)
+                    .foregroundColor(themeManager.textPrimary)
+                    .focused($isInputFocused)
+                    .onSubmit {
+                        if !taskName.isEmpty {
+                            addTask()
                         }
-                }
+                    }
             }
             .padding(DesignSystem.spacingM)
             .background(themeManager.surface)
