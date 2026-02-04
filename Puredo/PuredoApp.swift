@@ -25,6 +25,7 @@ struct PuredoApp: App {
         .windowStyle(.hiddenTitleBar)
         .windowToolbarStyle(.unified)
         .defaultSize(width: 420, height: 840)
+        .windowResizability(.contentSize)
         .modelContainer(for: Task.self)
         .commands {
             // Replace new item command to prevent Cmd+N from creating new window

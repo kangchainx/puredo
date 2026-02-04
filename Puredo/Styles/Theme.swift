@@ -23,6 +23,8 @@ enum AppTheme: String, CaseIterable {
 // Theme Manager using AppStorage
 class ThemeManager: ObservableObject {
     @Published var currentTheme: AppTheme = .dark
+    @Published var isMinimalMode: Bool = false
+    @Published var autoMinimalModeOnPin: Bool = false
     
     init() {
         if let savedTheme = UserDefaults.standard.string(forKey: "appTheme"),
@@ -31,10 +33,25 @@ class ThemeManager: ObservableObject {
         } else {
             self.currentTheme = .dark
         }
+        
+        self.isMinimalMode = UserDefaults.standard.bool(forKey: "isMinimalMode")
+        self.autoMinimalModeOnPin = UserDefaults.standard.bool(forKey: "autoMinimalModeOnPin")
+    }
+    
+    func toggleAutoMinimalModeOnPin() {
+        autoMinimalModeOnPin.toggle()
+        UserDefaults.standard.set(autoMinimalModeOnPin, forKey: "autoMinimalModeOnPin")
     }
     
     private func saveTheme() {
         UserDefaults.standard.set(currentTheme.rawValue, forKey: "appTheme")
+    }
+    
+    func toggleMinimalMode() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            isMinimalMode.toggle()
+        }
+        UserDefaults.standard.set(isMinimalMode, forKey: "isMinimalMode")
     }
     
     // Cursor Dark Theme Colors

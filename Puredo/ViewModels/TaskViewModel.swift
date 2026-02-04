@@ -13,7 +13,7 @@ import SwiftData
 class TaskViewModel {
     var searchText: String = ""
     private var modelContext: ModelContext
-    private var allTasks: [Task] = []
+    var allTasks: [Task] = []
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext
@@ -55,15 +55,30 @@ class TaskViewModel {
         return incompleteTasks + completedTasks
     }
     
+    var completedTasksCount: Int {
+        let calendar = Calendar.current
+        return allTasks.filter { calendar.isDateInToday($0.date) && $0.isCompleted }.count
+    }
+    
+    var totalTasksCount: Int {
+        let calendar = Calendar.current
+        return allTasks.filter { calendar.isDateInToday($0.date) }.count
+    }
+    
+    var historicalTasks: [Task] {
+        let calendar = Calendar.current
+        return allTasks
+            .filter { !calendar.isDateInToday($0.date) }
+            .sorted { $0.date > $1.date }
+    }
+    
     func loadTasks() {
         let descriptor = FetchDescriptor<Task>(sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
         do {
             allTasks = try modelContext.fetch(descriptor)
-            WidgetSyncService.sync(tasks: allTasks)
         } catch {
             print("Failed to fetch tasks: \(error)")
             allTasks = []
-            WidgetSyncService.sync(tasks: allTasks)
         }
     }
     

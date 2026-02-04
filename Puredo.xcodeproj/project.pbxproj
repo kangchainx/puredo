@@ -7,27 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A1F00012F30000100A1B010 /* PuredoWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9A1F00012F30000100A1B011 /* PuredoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		83F361042F32FE5700F503CC /* SettingsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83F361032F32FE5700F503CC /* SettingsMenuView.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		9A1F00012F30000100A1B018 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 83B86B332F2F0D320074D6C4 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9A1F00012F30000100A1B017;
-			remoteInfo = PuredoWidgetExtension;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
-		9A1F00012F30000100A1B016 /* Embed App Extensions */ = {
+		9A1F00012F30000100A1B016 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				9A1F00012F30000100A1B010 /* PuredoWidgetExtension.appex in Embed App Extensions */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -35,7 +24,7 @@
 
 /* Begin PBXFileReference section */
 		83B86B3B2F2F0D320074D6C4 /* Puredo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Puredo.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A1F00012F30000100A1B011 /* PuredoWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PuredoWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		83F361032F32FE5700F503CC /* SettingsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -44,22 +33,10 @@
 			path = Puredo;
 			sourceTree = "<group>";
 		};
-		9A1F00012F30000100A1B012 /* PuredoWidget */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = PuredoWidget;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		83B86B382F2F0D320074D6C4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9A1F00012F30000100A1B013 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -73,8 +50,8 @@
 			isa = PBXGroup;
 			children = (
 				83B86B3D2F2F0D320074D6C4 /* Puredo */,
-				9A1F00012F30000100A1B012 /* PuredoWidget */,
 				83B86B3C2F2F0D320074D6C4 /* Products */,
+				83F361032F32FE5700F503CC /* SettingsMenuView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -82,7 +59,6 @@
 			isa = PBXGroup;
 			children = (
 				83B86B3B2F2F0D320074D6C4 /* Puredo.app */,
-				9A1F00012F30000100A1B011 /* PuredoWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,12 +73,11 @@
 				83B86B372F2F0D320074D6C4 /* Sources */,
 				83B86B382F2F0D320074D6C4 /* Frameworks */,
 				83B86B392F2F0D320074D6C4 /* Resources */,
-				9A1F00012F30000100A1B016 /* Embed App Extensions */,
+				9A1F00012F30000100A1B016 /* CopyFiles */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				9A1F00012F30000100A1B019 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				83B86B3D2F2F0D320074D6C4 /* Puredo */,
@@ -113,28 +88,6 @@
 			productName = Puredo;
 			productReference = 83B86B3B2F2F0D320074D6C4 /* Puredo.app */;
 			productType = "com.apple.product-type.application";
-		};
-		9A1F00012F30000100A1B017 /* PuredoWidgetExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9A1F00012F30000100A1B022 /* Build configuration list for PBXNativeTarget "PuredoWidgetExtension" */;
-			buildPhases = (
-				9A1F00012F30000100A1B015 /* Sources */,
-				9A1F00012F30000100A1B013 /* Frameworks */,
-				9A1F00012F30000100A1B014 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				9A1F00012F30000100A1B012 /* PuredoWidget */,
-			);
-			name = PuredoWidgetExtension;
-			packageProductDependencies = (
-			);
-			productName = PuredoWidgetExtension;
-			productReference = 9A1F00012F30000100A1B011 /* PuredoWidgetExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -147,9 +100,6 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					83B86B3A2F2F0D320074D6C4 = {
-						CreatedOnToolsVersion = 26.2;
-					};
-					9A1F00012F30000100A1B017 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -169,20 +119,12 @@
 			projectRoot = "";
 			targets = (
 				83B86B3A2F2F0D320074D6C4 /* Puredo */,
-				9A1F00012F30000100A1B017 /* PuredoWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		83B86B392F2F0D320074D6C4 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9A1F00012F30000100A1B014 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -196,25 +138,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9A1F00012F30000100A1B015 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+				83F361042F32FE5700F503CC /* SettingsMenuView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		9A1F00012F30000100A1B019 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9A1F00012F30000100A1B017 /* PuredoWidgetExtension */;
-			targetProxy = 9A1F00012F30000100A1B018 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		83B86B442F2F0D330074D6C4 /* Debug */ = {
@@ -403,62 +331,6 @@
 			};
 			name = Release;
 		};
-		9A1F00012F30000100A1B020 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_ENTITLEMENTS = PuredoWidget/PuredoWidget.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UN3D86L7HD;
-				ENABLE_APP_SANDBOX = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = PuredoWidget/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kangchainx.Puredo.WidgetExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		9A1F00012F30000100A1B021 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_ENTITLEMENTS = PuredoWidget/PuredoWidget.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = UN3D86L7HD;
-				ENABLE_APP_SANDBOX = YES;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = PuredoWidget/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = kangchainx.Puredo.WidgetExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				REGISTER_APP_GROUPS = YES;
-				SDKROOT = macosx;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -476,15 +348,6 @@
 			buildConfigurations = (
 				83B86B472F2F0D330074D6C4 /* Debug */,
 				83B86B482F2F0D330074D6C4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9A1F00012F30000100A1B022 /* Build configuration list for PBXNativeTarget "PuredoWidgetExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9A1F00012F30000100A1B020 /* Debug */,
-				9A1F00012F30000100A1B021 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

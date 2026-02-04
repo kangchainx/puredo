@@ -12,56 +12,74 @@ import AppKit
 struct HeaderView: View {
     @Bindable var viewModel: TaskViewModel
     @EnvironmentObject private var themeManager: ThemeManager
+    @Binding var showMinimalModeNotification: Bool
     @State private var showingAddTask = false
+    @State private var showingSettings = false
     @State private var isPinned = false
-
+    
     var body: some View {
         VStack(spacing: DesignSystem.spacingM) {
             HStack(alignment: .top) {
                 // Left side: Title only
                 Text("待办清单")
-                    .font(.system(size: 28, weight: .bold))
+                    .font(.system(size: 22, weight: .bold))
                     .foregroundColor(themeManager.textPrimary)
 
                 Spacer()
 
-                // Right side: Theme toggle, Pin button, Add button and task count
-                VStack(alignment: .trailing, spacing: DesignSystem.spacingXS) {
-                    HStack(spacing: DesignSystem.spacingS) {
+                // Right side: Theme toggle, Pin button and Add button
+                HStack(spacing: DesignSystem.spacingM) {
+                    // Secondary buttons group (more subtle)
+                    HStack(spacing: DesignSystem.spacingXS) {
+                        // Settings menu button
+                        Button(action: { showingSettings = true }) {
+                            Image(systemName: "gear")
+                                .font(.system(size: 16))
+                                .foregroundColor(themeManager.textTertiary)
+                                .frame(width: 28, height: 28)
+                        }
+                        .buttonStyle(.plain)
+                        .help("设置")
+                        .popover(isPresented: $showingSettings, arrowEdge: .bottom) {
+                            SettingsMenuView()
+                        }
+                        .opacity(0.7)
+                        
                         // Theme toggle button
                         Button(action: { themeManager.toggle() }) {
                             Image(systemName: themeManager.currentTheme == .dark ? "moon.fill" : "sun.max.fill")
-                                .font(.system(size: 18))
-                                .foregroundColor(themeManager.textSecondary)
+                                .font(.system(size: 16))
+                                .foregroundColor(themeManager.textTertiary)
+                                .frame(width: 28, height: 28)
                         }
                         .buttonStyle(.plain)
                         .help(themeManager.currentTheme == .dark ? "深色模式" : "浅色模式")
+                        .opacity(0.7)
                         
                         // Pin button
                         Button(action: { togglePin() }) {
                             Image(systemName: isPinned ? "pin.fill" : "pin")
-                                .font(.system(size: 18))
-                                .foregroundColor(isPinned ? themeManager.accent : themeManager.textSecondary)
+                                .font(.system(size: 16))
+                                .foregroundColor(isPinned ? themeManager.accent : themeManager.textTertiary)
+                                .frame(width: 28, height: 28)
                         }
                         .buttonStyle(.plain)
                         .help(isPinned ? "取消置顶" : "窗口置顶")
-                        
-                        // Add task button
-                        Button(action: { showingAddTask = true }) {
-                            Image(systemName: "plus.circle.fill")
-                                .font(.system(size: 24))
-                                .foregroundColor(themeManager.accent)
-                        }
-                        .buttonStyle(.plain)
-                        .keyboardShortcut("n", modifiers: .command)
-                        .popover(isPresented: $showingAddTask) {
-                            AddTaskPopoverView(viewModel: viewModel, isPresented: $showingAddTask)
-                        }
+                        .opacity(isPinned ? 1.0 : 0.7)
                     }
                     
-                    Text(subtitle)
-                        .font(.system(size: 14))
-                        .foregroundColor(themeManager.textSecondary)
+                    // Primary action button (prominent)
+                    Button(action: { showingAddTask = true }) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 32))
+                            .foregroundColor(themeManager.accent)
+                    }
+                    .buttonStyle(.plain)
+                    .keyboardShortcut("n", modifiers: .command)
+                    .popover(isPresented: $showingAddTask) {
+                        AddTaskPopoverView(viewModel: viewModel, isPresented: $showingAddTask)
+                    }
+                    .shadow(color: themeManager.accent.opacity(0.25), radius: 4, x: 0, y: 2)
                 }
             }
 
@@ -91,11 +109,22 @@ struct HeaderView: View {
         }
         .padding(DesignSystem.spacingL)
         .background(themeManager.backgroundSecondary)
+        .onAppear {
+            // Sync pin state with actual window level
+            updatePinState()
+        }
+        .onChange(of: themeManager.isMinimalMode) { oldValue, newValue in
+            // When exiting minimal mode, check and restore pin state
+            if !newValue {
+                updatePinState()
+            }
+        }
     }
 
-    private var subtitle: String {
-        let count = viewModel.filteredTasks.filter { !$0.isCompleted }.count
-        return "\(count) 个任务"
+    private func updatePinState() {
+        if let window = NSApplication.shared.windows.first {
+            isPinned = window.level == .floating
+        }
     }
     
     private func togglePin() {
@@ -106,12 +135,26 @@ struct HeaderView: View {
             if let window = NSApplication.shared.windows.first {
                 window.level = .floating
             }
+            
+            // Check if auto minimal mode is enabled
+            if themeManager.autoMinimalModeOnPin {
+                // Directly switch to minimal mode
+                themeManager.toggleMinimalMode()
+            } else {
+                // Show notification to ask user
+                showMinimalModeNotification = true
+            }
         } else {
             // Unpin the window
             isPinned = false
             
             if let window = NSApplication.shared.windows.first {
                 window.level = .normal
+            }
+            
+            // If in minimal mode, exit it
+            if themeManager.isMinimalMode {
+                themeManager.toggleMinimalMode()
             }
         }
     }
@@ -122,7 +165,7 @@ struct HeaderView: View {
     let container = try! ModelContainer(for: Task.self, configurations: config)
     let viewModel = TaskViewModel(modelContext: container.mainContext)
     
-    return HeaderView(viewModel: viewModel)
+    return HeaderView(viewModel: viewModel, showMinimalModeNotification: .constant(false))
         .frame(width: 800)
         .background(Color.pureBlack)
         .environmentObject(ThemeManager())
