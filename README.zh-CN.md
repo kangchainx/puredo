@@ -1,47 +1,82 @@
-# Puredo
+<div align="center">
 
-Puredo 是一个基于 SwiftUI + SwiftData 的 macOS 待办应用，并支持桌面小组件快速查看任务。
+![puredo](https://socialify.git.ci/kangchainx/puredo/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto)
 
-## 功能特性
+**一个简洁、键盘友好的 macOS 待办应用，基于 SwiftUI + SwiftData 构建。**
 
-- 聚焦“今日任务”列表
-- 红 / 黄 / 蓝优先级
-- 搜索与快速新增任务
-- 浅色 / 深色主题切换
-- macOS 桌面小组件（极简任务视图）
+[![GitHub Stars](https://img.shields.io/github/stars/kangchainx/puredo?style=flat-square&logo=github)](https://github.com/kangchainx/puredo/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/kangchainx/puredo?style=flat-square&logo=github)](https://github.com/kangchainx/puredo/network/members)
+[![License](https://img.shields.io/github/license/kangchainx/puredo?style=flat-square)](https://github.com/kangchainx/puredo/blob/main/LICENSE)
+[![Issues](https://img.shields.io/github/issues/kangchainx/puredo?style=flat-square)](https://github.com/kangchainx/puredo/issues)
 
-## 技术栈
+[English](README.md) | [简体中文](README.zh-CN.md)
 
-- SwiftUI
-- SwiftData
-- WidgetKit
-- Xcode 工程（`Puredo.xcodeproj`）
+</div>
 
-## 目录结构
+---
 
-- `Puredo/`：主应用源码
-- `PuredoWidget/`：小组件扩展源码
-- `Puredo.xcodeproj/`：Xcode 工程配置
+## 🎬 演示
 
-## 本地运行
+<div align="center">
+  <img src="puredo.gif" alt="Puredo 演示" width="100%" />
+</div>
 
-1. 使用 Xcode 打开 `Puredo.xcodeproj`
-2. 选择 `Puredo` Scheme
-3. 在 macOS 上运行
+## 🚀 核心特性
 
-## 小组件说明
+- **聚焦今日任务** - 快速查看和处理当日任务，支持优先级标记与完成状态。
+- **高效任务操作** - 支持 `Cmd + N` 快速新增任务，交互流畅，搜索实时过滤。
+- **历史记录按日期筛选** - 历史面板内置日历，可按选中日期查看任务。
+- **极简模式** - 一键切换紧凑、低干扰视图，专注执行任务。
+- **窗口置顶工作流** - 支持窗口置顶，并可配置置顶后自动进入极简模式。
+- **主题切换** - 内置深色/浅色主题，偏好自动持久化。
+- **本地优先存储** - 基于 SwiftData，本地持久化数据。
 
-小组件通过 App Group 读取主应用写入的任务快照，并展示未完成任务的极简列表。
+## 🧱 技术栈
 
-## CI/CD
+- **语言：** Swift
+- **界面：** SwiftUI
+- **数据持久化：** SwiftData
+- **平台：** macOS（Xcode 工程）
 
-项目已配置 GitHub Actions：
+## 🛠️ 本地运行
 
-- 在 `main` 分支的 push / pull request 时执行构建
-- 推送 `v1.0.0` 这类版本标签时，自动打包并发布构建产物
+**前置要求：**  
+- macOS  
+- Xcode（建议最新版）
 
-配置文件：`.github/workflows/ci-cd.yml`
+1. **克隆仓库**
+   ```bash
+   git clone https://github.com/kangchainx/puredo.git
+   cd puredo
+   ```
 
-## English README
+2. **用 Xcode 打开**
+   - 打开 `Puredo.xcodeproj`
+   - 选择 `Puredo` Scheme
 
-英文版本见 `README.md`。
+3. **编译运行**
+   - 在 Xcode 中按 `⌘R`
+
+## 🤝 参与贡献
+
+欢迎贡献代码与建议！
+- 如果你发现了问题，欢迎提交 [Issue](https://github.com/kangchainx/puredo/issues)。
+- 如果你有改进想法，欢迎提交 [Pull Request](https://github.com/kangchainx/puredo/pulls)。
+
+## 📈 Star History
+
+<div align="center">
+  <a href="https://star-history.com/#kangchainx/puredo&Date">
+    <img src="https://api.star-history.com/svg?repos=kangchainx/puredo&type=Date" alt="Star History Chart" width="100%" />
+  </a>
+</div>
+
+## 📄 许可证
+
+本项目采用 [MIT License](LICENSE) 开源协议。
+
+---
+
+<div align="center">
+  Made with ❤️ by <a href="https://github.com/kangchainx">kangchainx</a>
+</div>
