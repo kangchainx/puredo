@@ -16,6 +16,8 @@ struct HeaderView: View {
     @State private var showingAddTask = false
     @State private var showingSettings = false
     @State private var isPinned = false
+    @State private var isSearchEditing = false
+    @State private var neutralFocusSink: NSView?
     
     var body: some View {
         VStack(spacing: DesignSystem.spacingM) {
@@ -69,7 +71,7 @@ struct HeaderView: View {
                     }
                     
                     // Primary action button (prominent)
-                    Button(action: { showingAddTask = true }) {
+                    Button(action: { presentAddTaskPopover() }) {
                         Image(systemName: "plus.circle.fill")
                             .font(.system(size: 32))
                             .foregroundColor(themeManager.accent)
@@ -82,19 +84,25 @@ struct HeaderView: View {
                     .shadow(color: themeManager.accent.opacity(0.25), radius: 4, x: 0, y: 2)
                 }
             }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                focusNeutralResponder()
+            }
 
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundColor(themeManager.textSecondary)
 
                 ZStack(alignment: .leading) {
-                    if viewModel.searchText.isEmpty {
+                    if viewModel.searchText.isEmpty && !isSearchEditing {
                         Text("搜索任务")
-                            .foregroundColor(themeManager.textSecondary)
+                            .foregroundStyle(Color(hex: "#9d9d9d"))
                             .allowsHitTesting(false)
                     }
-                    
-                    TextField("", text: $viewModel.searchText)
+
+                    TextField("", text: $viewModel.searchText, onEditingChanged: { isEditing in
+                        isSearchEditing = isEditing
+                    })
                         .textFieldStyle(.plain)
                         .foregroundColor(themeManager.textPrimary)
                 }
@@ -109,9 +117,14 @@ struct HeaderView: View {
         }
         .padding(DesignSystem.spacingL)
         .background(themeManager.backgroundSecondary)
+        .background(
+            NeutralFocusSinkRepresentable(sinkView: $neutralFocusSink)
+                .frame(width: 0, height: 0)
+        )
         .onAppear {
             // Sync pin state with actual window level
             updatePinState()
+            updateInitialFirstResponder()
         }
         .onChange(of: themeManager.isMinimalMode) { oldValue, newValue in
             // When exiting minimal mode, check and restore pin state
@@ -126,7 +139,35 @@ struct HeaderView: View {
             isPinned = window.level == .floating
         }
     }
-    
+
+    private func presentAddTaskPopover() {
+        if !isSearchEditing {
+            focusNeutralResponder()
+        }
+        showingAddTask = true
+    }
+
+    private func focusNeutralResponder() {
+        guard let window = activeWindow() else { return }
+        if let neutralFocusSink {
+            window.makeFirstResponder(neutralFocusSink)
+        } else if let initial = window.initialFirstResponder {
+            window.makeFirstResponder(initial)
+        }
+    }
+
+    private func updateInitialFirstResponder() {
+        guard let window = activeWindow(), let neutralFocusSink else { return }
+        window.initialFirstResponder = neutralFocusSink
+    }
+
+    private func activeWindow() -> NSWindow? {
+        NSApplication.shared.keyWindow
+            ?? NSApplication.shared.mainWindow
+            ?? NSApplication.shared.windows.first(where: { $0.isVisible && $0.canBecomeMain })
+            ?? NSApplication.shared.windows.first
+    }
+
     private func togglePin() {
         if !isPinned {
             // Pin the window
@@ -158,6 +199,34 @@ struct HeaderView: View {
             }
         }
     }
+}
+
+private struct NeutralFocusSinkRepresentable: NSViewRepresentable {
+    @Binding var sinkView: NSView?
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NeutralFocusSinkView(frame: .zero)
+        DispatchQueue.main.async {
+            sinkView = view
+            view.window?.initialFirstResponder = view
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {
+        DispatchQueue.main.async {
+            if sinkView !== nsView {
+                sinkView = nsView
+            }
+            if nsView.window?.initialFirstResponder !== nsView {
+                nsView.window?.initialFirstResponder = nsView
+            }
+        }
+    }
+}
+
+private final class NeutralFocusSinkView: NSView {
+    override var acceptsFirstResponder: Bool { true }
 }
 
 #Preview {
