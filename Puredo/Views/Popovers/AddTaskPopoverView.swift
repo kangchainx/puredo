@@ -67,10 +67,6 @@ struct AddTaskPopoverView: View {
                             Circle()
                                 .fill(priority.color)
                                 .frame(width: 20, height: 20)
-                                .overlay(
-                                    Circle()
-                                        .stroke(themeManager.textPrimary, lineWidth: taskPriority == priority ? 2 : 0)
-                                )
                                 .scaleEffect(taskPriority == priority ? 1.15 : 1.0)
                         }
                         .buttonStyle(.plain)
@@ -79,15 +75,23 @@ struct AddTaskPopoverView: View {
                 }
 
                 // Task name input
-                TextField("输入任务名称", text: $taskName)
-                    .textFieldStyle(.plain)
-                    .foregroundColor(themeManager.textPrimary)
-                    .focused($isInputFocused)
-                    .onSubmit {
-                        if !taskName.isEmpty {
-                            addTask()
-                        }
+                ZStack(alignment: .leading) {
+                    if taskName.isEmpty && !isInputFocused {
+                        Text("输入任务名称")
+                            .foregroundStyle(Color(hex: "#9d9d9d"))
+                            .allowsHitTesting(false)
                     }
+
+                    TextField("", text: $taskName)
+                        .textFieldStyle(.plain)
+                        .foregroundColor(themeManager.textPrimary)
+                        .focused($isInputFocused)
+                        .onSubmit {
+                            if !taskName.isEmpty {
+                                addTask()
+                            }
+                        }
+                }
             }
             .padding(DesignSystem.spacingM)
             .background(themeManager.surface)
@@ -125,7 +129,12 @@ struct AddTaskPopoverView: View {
                 .stroke(themeManager.border, lineWidth: 1)
         )
         .onAppear {
-            isInputFocused = true
+            focusInputField()
+        }
+        .onChange(of: isPresented) { _, newValue in
+            if newValue {
+                focusInputField()
+            }
         }
     }
 
@@ -143,6 +152,18 @@ struct AddTaskPopoverView: View {
         }
 
         isPresented = false
+    }
+    
+    private func focusInputField() {
+        DispatchQueue.main.async {
+            isInputFocused = true
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            if isPresented {
+                isInputFocused = true
+            }
+        }
     }
 }
 

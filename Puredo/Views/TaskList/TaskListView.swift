@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import AppKit
 
 struct TaskListView: View {
     @Bindable var viewModel: TaskViewModel
@@ -36,6 +37,15 @@ struct TaskListView: View {
                 .padding(DesignSystem.spacingL)
             }
         }
+        .simultaneousGesture(
+            TapGesture().onEnded {
+                if let window = NSApplication.shared.keyWindow ?? NSApplication.shared.mainWindow {
+                    if let initial = window.initialFirstResponder {
+                        window.makeFirstResponder(initial)
+                    }
+                }
+            }
+        )
     }
 
     private var emptyStateView: some View {
